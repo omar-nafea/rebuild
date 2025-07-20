@@ -25,7 +25,8 @@ class IndexController extends Controller
 
     public function showCategories()
     {
-        return view('posts.categories' , ['PageTitle' => 'Categories']);
+        $categories = Category::all();
+        return view('posts.categories' , ['PageTitle' => 'Categories', 'categories' => $categories]);
 
     }
 }
