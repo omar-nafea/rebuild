@@ -16,7 +16,7 @@ class WriterController extends Controller
     public function index()
     {
         //
-        $writers = Writer::paginate(5);
+        $writers = Writer::paginate(3);
         return view('writers.index', ['writers' => $writers, 'PageTitle' => 'Writers']);
     }
 
@@ -34,16 +34,19 @@ class WriterController extends Controller
      */
     public function store(WriterRequest $request)
     {
-        //
+        // [name] => fasdfads [email] => Super2024Palm@gsd.com [password] => palm2024fsda [isPublished] => on ) 
         // $writer = Writer::create([
         //     'name' => $request->name,
         //     'email' => $request->email,
         //     'password' => Hash::make($request->password),
         //     'num_posts' => $request->num_posts ?? 0,
         // ]);
-
-        // return redirect()->route('writers.index')->with('success', 'Writer created successfully!');
-        print_r($request->all());
+        $writer = new Writer();
+        $writer->name = $request->input('name');
+        $writer->password = Hash::make($request->input('password'));
+        $writer->email = $request->input('email');
+        $writer->save();
+        return redirect()->route('writers.index')->with('success', 'Writer created successfully!');
     }
 
     /**
@@ -52,8 +55,12 @@ class WriterController extends Controller
     public function show(string $id)
     {
         //
-        $writer = Writer::find($id);
-        return view('writers.show', ['writer' => $writer]);
+        $writer = Writer::findOrFail($id);
+        $posts = $writer->posts()->paginate(5);
+        if (!$writer) {
+            return redirect()->route('writers.index')->with('error', 'Writer not found.');
+        }
+        return view('writers.show', ['posts' => $posts, 'writer' => $writer, 'PageTitle' => $writer->name]);
     }
 
     /**
@@ -78,5 +85,11 @@ class WriterController extends Controller
     public function destroy(string $id)
     {
         //
+        $writer = Writer::findOrFail($id);
+        if (!$writer) {
+            return redirect()->route('writers.index')->with('error', 'Writer not found.');
+        }
+        $writer->delete();
+        return redirect()->route('writers.index')->with('success', "writer has been deleted");
     }
 }

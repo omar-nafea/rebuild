@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PostRequest;
 use Illuminate\Http\Request;
 use App\Models\Post;
 
@@ -14,7 +15,7 @@ class PostController extends Controller
     {
         //
         $posts = Post::all();
-        return view('posts.index', ['posts' => $posts]);
+        return view('posts.index', ['posts' => $posts, 'PageTitle' => 'Posts']);
     }
 
     /**
@@ -23,14 +24,22 @@ class PostController extends Controller
     public function create()
     {
         //
+        return view('posts.create', ['PageTitle' => 'Create Post']);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(PostRequest $request)
     {
         //
+        $post = new Post();
+        $post->title = $request->input('title');
+        $post->content = $request->input('content');
+        $post->isPublished = $request->input('isPublished') === 'on';
+        $post->writer_id = $request->input('writer_id');
+        $post->save();
+        return redirect()->route('posts.index')->with('success', 'Post created successfully!');
     }
 
     /**
@@ -39,6 +48,8 @@ class PostController extends Controller
     public function show(string $id)
     {
         //
+        $post = Post::findOrFail($id);
+        return view('posts.show', ['post' => $post, 'PageTitle' => $post->title]);
     }
 
     /**
@@ -47,6 +58,8 @@ class PostController extends Controller
     public function edit(string $id)
     {
         //
+        $post = Post::findOrFail($id);
+        return view('posts.edit', ['post' => $post, 'PageTitle' => 'Edit Post']);
     }
 
     /**
@@ -55,6 +68,16 @@ class PostController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        $post = Post::findOrFail($id);
+        if (!$post) {
+            return redirect()->route('posts.index')->with('error', 'Post not found.');
+        }
+        $post->title = $request->input('title');
+        $post->content = $request->input('content');
+        $post->isPublished = $request->input('isPublished') === 'on';
+        $post->writer_id = $request->input('writer_id');
+        $post->save();
+        return redirect()->route('posts.index')->with('success', 'Post updated successfully!');
     }
 
     /**
@@ -63,5 +86,11 @@ class PostController extends Controller
     public function destroy(string $id)
     {
         //
+        $post = Post::findOrFail($id);
+        if (!$post) {
+            return redirect()->route('posts.index')->with('error', 'Post not found.');
+        }
+        $post->delete();
+        return redirect()->route('posts.index')->with('success', 'Post deleted successfully!');
     }
 }

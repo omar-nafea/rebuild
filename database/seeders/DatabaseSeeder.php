@@ -18,6 +18,11 @@ class DatabaseSeeder extends Seeder
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
-        ]);
+        ]); {
+            \App\Models\Writer::factory(100)->create()->each(function ($writer) {
+                \App\Models\Post::factory(1)->create(['writer_id' => $writer->id]);
+            });
+            \App\Models\Post::factory(100)->create();
+        }
     }
 }

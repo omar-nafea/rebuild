@@ -1,3 +1,7 @@
-<div>
-    <!-- Be present above all else. - Naval Ravikant -->
-</div>
+<x-layout>
+    <div class="flex gap-2">
+        @forEach($categories as $category)
+            <div>{{ $category->title }} </div>
+        @endforeach
+    </div>
+</x-layout>

@@ -21,10 +21,12 @@ class WriterRequest extends FormRequest
      */
     public function rules(): array
     {
+        // Define validation rules for the writer creation request
+        // email is unique in the writers table
         return [
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:writers',
-            'password' => 'required|string|min:8',
+            'name' => 'bail|required|string|min:8|max:255',
+            'email' => 'bail|required|email|unique:writers,email',
+            'password' => 'bail|required|string|min:8',
         ];
     }
 
@@ -37,7 +39,7 @@ class WriterRequest extends FormRequest
     {
         return [
             'name.required' => 'The writer name is required.',
-            'name.max' => 'The writer name cannot exceed 255 characters.',
+            'name.min' => 'The writer name must be at least 8 characters.',
             'email.required' => 'The email address is required.',
             'email.email' => 'Please provide a valid email address.',
             'email.unique' => 'This email address is already taken.',
