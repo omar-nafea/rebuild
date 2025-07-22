@@ -6,10 +6,12 @@
     @if(session('error'))
     <div class="mb-4 p-4 bg-red-100 text-red-800 rounded">{{ session('error') }}</div>
   @endif
+  @auth
     <a href="{{ route('posts.create') }}"
       class="inline-flex items-center w-[25%] my-4 justify-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
       Create New Writer
     </a>
+  @endauth
     <div class="grid grid-cols-1 gap-4 ">
       @if ($writers->isEmpty())
       <div class="col-span-full text-center p-6">
@@ -17,7 +19,7 @@
       </div>
     @endif
       @foreach ($writers as $writer)
-      <a href="{{ route('writers.show', $writer) }}" class="w-full text-gray-50 hover:bg-gray-100 hover:shadow-2xl font-bold m-auto  bg-gray-900  hover:text-black transition-bg ease-in-out duration-250 rounded-2xl p-4 shadow-md">
+      <a href="{{ route('writers.show', $writer) }}" class="w-full  hover:ring-2 ring-gray-900 text-gray-50 hover:bg-gray-100 hover:shadow-2xl font-bold m-auto  bg-gray-900  hover:text-black transition-bg ease-in-out duration-250 rounded-2xl p-4 shadow-md">
       <div class="p-4">
         <h5 class="mb-2  text-xl font-semibold">
           {{ $writer->name }}
