@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\Post;
+use App\Models\Writer;
 
 class PostFactory extends Factory
 {
@@ -13,9 +14,9 @@ class PostFactory extends Factory
     {
         return [
             'title' => $this->faker->sentence(),
-            'body' => $this->faker->paragraphs(3, true),
-            'writer_id' => \App\Models\Writer::factory(),
-            'published_at' => $this->faker->optional()->dateTimeThisYear(),
+            'content' => $this->faker->paragraphs(3, true),
+            'isPublished' => $this->faker->boolean(),
+            'writer_id' => Writer::factory(),
         ];
     }
 } 

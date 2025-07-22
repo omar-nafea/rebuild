@@ -1,19 +1,16 @@
 <x-layout :title="$PageTitle">
-    <div>
-        <h1>{{ $writer->name }}</h1>
-        <p>Number of Posts: {{ $writer->num_posts }}</p>
+  @foreach ($posts as $post)
+    <a href="{{ route('posts.show', $post) }}"
+    class="block my-4 w-full text-gray-50 hover:bg-gray-100 hover:shadow-2xl font-bold m-auto  bg-gray-900  hover:text-black transition-bg ease-in-out duration-250 rounded-2xl p-4 shadow-md">
+    <div class="p-4">
+      <h5 class="mb-2  text-xl font-semibold">
+      {{ $post->title }}
+      </h5>
+      <p class=" leading-normal font-light">
+      {{ $post->content }}
+      </p>
     </div>
-    <form action="{{ route('writers.destroy', $writer->id) }}" method="POST">
-        @csrf
-        @method('DELETE')
-        <button style="cursor: pointer;" type="submit" class="bg-red-800">Delete</button>
-    </form>
-    <div>
-        @foreach ($posts as $post )
-        <div>
-            <h1> Posts: </h1>
-            <h2>{{ $post->title }}</h2>
-        </div>
-        @endforeach
-    </div>
+    </a>
+  @endforeach
+  </div>
 </x-layout>

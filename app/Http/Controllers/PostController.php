@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PostRequest;
+use App\Models\Writer;
 use Illuminate\Http\Request;
 use App\Models\Post;
+use Illuminate\Pagination\Paginator;
 
 class PostController extends Controller
 {
@@ -14,7 +16,7 @@ class PostController extends Controller
     public function index()
     {
         //
-        $posts = Post::all();
+        $posts = Post::latest()->paginate(5);
         return view('posts.index', ['posts' => $posts, 'PageTitle' => 'Posts']);
     }
 
@@ -24,7 +26,8 @@ class PostController extends Controller
     public function create()
     {
         //
-        return view('posts.create', ['PageTitle' => 'Create Post']);
+        $writers = Writer::all();
+        return view('posts.create', ['writers' => $writers, 'PageTitle' => 'Create New Post']);
     }
 
     /**
@@ -39,6 +42,7 @@ class PostController extends Controller
         $post->isPublished = $request->input('isPublished') === 'on';
         $post->writer_id = $request->input('writer_id');
         $post->save();
+        $post->categories()->sync($request->input('category', [])); // Sync categories if provided
         return redirect()->route('posts.index')->with('success', 'Post created successfully!');
     }
 
@@ -59,7 +63,7 @@ class PostController extends Controller
     {
         //
         $post = Post::findOrFail($id);
-        return view('posts.edit', ['post' => $post, 'PageTitle' => 'Edit Post']);
+        return view('posts.edit', ['post' => $post, 'PageTitle' => $post->title]);
     }
 
     /**
@@ -77,7 +81,7 @@ class PostController extends Controller
         $post->isPublished = $request->input('isPublished') === 'on';
         $post->writer_id = $request->input('writer_id');
         $post->save();
-        return redirect()->route('posts.index')->with('success', 'Post updated successfully!');
+        return redirect()->route('posts.show', $post)->with('success', 'Post updated successfully!');
     }
 
     /**

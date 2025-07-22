@@ -16,7 +16,7 @@ class WriterController extends Controller
     public function index()
     {
         //
-        $writers = Writer::paginate(3);
+        $writers = Writer::paginate(5);
         return view('writers.index', ['writers' => $writers, 'PageTitle' => 'Writers']);
     }
 

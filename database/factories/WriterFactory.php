@@ -14,7 +14,7 @@ class WriterFactory extends Factory
         return [
             'name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
-            'bio' => $this->faker->paragraph(),
+            'password' => $this->faker->password(),
         ];
     }
 } 
