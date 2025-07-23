@@ -1,26 +1,26 @@
 <x-layout>
   <div class="my-4 bg-gray-100 text-black p-4 rounded-2xl flex gap-3">
     @foreach ($categories as $category)
-    <div class="group relative  inline-block">
-      <!-- The Shadow Layer -->
-      <div class="absolute inset-0 rounded-lg bg-black"></div>
-      <!-- The Anchor Tag styled as a Button -->
-      <a href="{{ route('categories.show', $category) }}" class="
-              relative block w-full
-              transform
-              rounded-lg
-              border-2 border-black
-              bg-white
-              px-6 py-2
-              text-xl font-bold text-black
-              transition-transform duration-150 ease-in-out
-              group-hover:translate-x-[4px]
-              group-hover:translate-y-[-4px]
-            ">
-      {{ $category->title }}
-      </a>
-    </div>
-  @endforeach
+      <div class="group relative inline-block ">
+        <!-- The Shadow Layer -->
+        <div class="absolute inset-0 rounded-lg bg-black"></div>
+        <!-- The Anchor Tag styled as a Button -->
+        <a href="{{ route('categories.show', $category) }}" class="
+          relative block w-full
+          transform
+          rounded-lg
+          border-2 border-black
+          bg-white
+          px-6 py-2
+          text-xl font-bold text-black
+          transition-transform duration-150 ease-in-out
+          group-hover:translate-x-[4px]
+          group-hover:translate-y-[-4px]
+        ">
+        {{ $category->title }}
+        </a>
+      </div>
+    @endforeach
   </div>
 
   <div>

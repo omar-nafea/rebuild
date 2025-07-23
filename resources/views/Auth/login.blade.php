@@ -29,11 +29,7 @@
 
       @if ($errors->any())
       <div class="mb-4 p-4 bg-red-100 text-red-800 rounded">
-      <ul class="list-disc pl-5">
-        @foreach ($errors->all() as $error)
-      <li>{{ $error }}</li>
-      @endforeach
-      </ul>
+        <div>{{ $errors->first() }}</div>
       </div>
     @endif
       <form action="/login" method="POST" class="space-y-6">

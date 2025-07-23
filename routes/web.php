@@ -10,10 +10,15 @@ use App\Http\Controllers\CategoryController;
 use Pest\Plugins\Only;
 
 Route::get('/', [IndexController::class, 'index']);
-Route::get('/cat', [IndexController::class, 'createCategory']);
 
-Route::resource('writers', WriterController::class);
+Route::middleware('onlyMe')->group(function(){
+  Route::get('/cat', [IndexController::class, 'createCategory']);
+  Route::resource('writers', WriterController::class);
+});
+Route::middleware('auth')->group(function(){
 Route::resource('posts', PostController::class);
+});
+
 Route::resource('comments', CommentController::class);
 Route::resource('categories', CategoryController::class)->only(['index', 'show']);
 

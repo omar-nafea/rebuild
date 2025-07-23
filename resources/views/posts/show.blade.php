@@ -37,25 +37,39 @@
           -- {{ $post->isPublished ? 'Published' : 'Draft'}}
         </p>
 
+
+
       </div>
-      <form action="{{ route('posts.store') }}" method="post">
+      @if(isset($comments) && $comments->count())
+      <div class="my-6">
+      <h3 class="font-semibold text-gray-900 mb-2">Comments</h3>
+      @foreach($comments as $comment)
+      <div class="mb-2 p-2 border rounded bg-gray-50">
+      <div class="text-sm text-gray-700">{{ $comment->content }}</div>
+      <div class="text-md text-gray-900 italic">by {{ $comment->author }} &middot;
+      {{ $comment->created_at->diffForHumans() }}
+      </div>
+      </div>
+    @endforeach
+      </div>
+    @endif
+      <form action="{{ route('comments.store') }}" method="post">
         @csrf
         @method('POST')
+        <input type="hidden" name="post_id" value="{{ $post->id }}">
         <h2 class="my-4 font-semibold text-gray-900 capitalize">Add your Comment</h2>
-        <label for="comment" class="block text-sm/6 font-bold text-gray-900">Comment</label>
-        <div class="mt-2 ">
-          <input id="comment" type="text" name="comment"
-            class=" outline-gray-300 block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1  placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
+        <label for="content" class="block text-sm/6 font-bold text-gray-900">Comment</label>
+        <div class="mt-2 flex items-center justify-between">
+          <input id="content" type="text" name="content"
+            class=" outline-gray-300 block w-[100%] mr-4 rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1  placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
+        
+        <div class="mt-2 display-none">
+          <input id="author" type="hidden" name="author" value="{{ auth()->user()->name }}"
+            class=" outline-gray-300 display-none rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1  placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
         </div>
-        <label for="author" class="block text-sm/6 font-bold text-gray-900">Author</label>
-        <div class="mt-2 ">
-          <input id="author" type="text" name="author"
-            class=" outline-gray-300 block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1  placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" />
-        </div>
-        <div class="mt-6 flex items-center justify-end gap-x-6">
           <button type="submit"
             class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Comment</button>
-        </div>
+            </div>
     </div>
     </form>
   </div>

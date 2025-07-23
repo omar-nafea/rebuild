@@ -10,43 +10,28 @@ class CommentController extends Controller
 
     public function store(Request $request)
     {
-        
-      $comment = new Comment();
-      $comment->content = $request->input('comment');
-      $comment->author = $request->input('author');
-      $comment->save();
-      return redirect()->with('success', 'Comment added successfully!');
+    $request->validate([
+        'content' => 'required',
+        'author' => 'required',
+        'post_id' => 'required|exists:posts,id',
+    ]);
+
+    Comment::create([
+        'content' => $request->input('content'),
+        'author' => $request->input('author'),
+        'post_id' => $request->input('post_id'),
+    ]);
+    return redirect()->route('posts.show', $request->input('post_id'))->with('success', 'Comment added!');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
+    
     public function destroy(string $id)
     {
-        //
+        $comment = Comment::findOrFail($id);
+        $comment->delete();
+        return redirect()->back()->with('success', 'Comment deleted successfully!');
     }
 }
