@@ -7,6 +7,7 @@ use App\Models\Writer;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -26,8 +27,7 @@ class PostController extends Controller
   public function create()
   {
     //
-    $writers = Writer::all();
-    return view('posts.create', ['writers' => $writers, 'PageTitle' => 'Create New Post']);
+    return view('posts.create', ['PageTitle' => 'Create New Post']);
   }
 
   /**
@@ -36,11 +36,12 @@ class PostController extends Controller
   public function store(PostRequest $request)
   {
     //
+    // print_r($request->all());
     $post = new Post();
     $post->title = $request->input('title');
     $post->content = $request->input('content');
     $post->isPublished = $request->input('isPublished') === 'on';
-    $post->writer_id = $request->input('writer_id');
+    $post->user_id = '1'; // Use the authenticated user's ID
     $post->save();
     $post->categories()->sync($request->input('category', [])); // Sync categories if provided
     return redirect()->route('posts.index')->with('success', 'Post created successfully!');

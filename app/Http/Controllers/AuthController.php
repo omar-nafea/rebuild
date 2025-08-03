@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\SignupRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -25,13 +26,13 @@ class AuthController extends Controller
       $user->email = $request->input('email');
       $user->password = $request->input('password');
       $user->save();
-      auth()->login($user);
+      Auth::login($user);
       return redirect('/');
     }
        public function login(Request $request)
     {
       $credintials = $request->only('email', 'password');
-      if (auth()->attempt($credintials)){
+      if (Auth::attempt($credintials)){
           $request->session()->regenerate();
           return redirect('/');
       }
@@ -41,7 +42,7 @@ class AuthController extends Controller
     }
     public function logout(Request $request)
     {
-      auth()->logout();
+      Auth::logout();
       return redirect('/');
     }
 }

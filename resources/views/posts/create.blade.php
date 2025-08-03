@@ -4,7 +4,7 @@
     @method('POST')
     <div class="space-y-12">
         <div class=" grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-          <div class="sm:col-span-3">
+          <div class="col-span-6">
             <input type="hidden" name="id" value="{{ $post->id ?? '' }}">
             <label for="title" class="block text-sm/6 font-bold text-gray-900">Title</label>
             <div class="mt-2">
@@ -16,56 +16,6 @@
       @enderror
           </div>
           
-
-          <div class="sm:col-span-3">
-            <label for="author_name" class="block text-sm/6 font-medium text-gray-900">Author</label>
-            <div class="mt-2">
-              {{-- 1. The VISIBLE input field for the user --}}
-              {{-- Its name is changed to "author_name" to not conflict with the ID field --}}
-              <input type="text" id="author_name" name="author_name" list="author-list"
-                placeholder="Type or select an author" autocomplete="off"
-                class="{{ $errors->has('writer_id') ? 'outline-red-500' : 'outline-gray-300' }} w-full rounded-md bg-white py-1.5 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
-
-              {{-- 2. The HIDDEN input field that will hold the selected author's ID --}}
-              {{-- This is what you will use in your controller. Notice the name is "writer_id" --}}
-              <input type="hidden" name="writer_id" id="author-id">
-
-              <datalist id="author-list">
-                @foreach ($writers as $writer)
-          {{-- 3. The options now have the NAME as the value (for display) --}}
-          {{-- and the ID is stored in a `data-id` attribute --}}
-          <option data-id="{{ $writer->id }}" value="{{ $writer->name }}">
-          @endforeach
-              </datalist>
-            </div>
-            {{-- The error message now checks for 'writer_id' --}}
-            @error('writer_id')
-        <span class="text-red-500 text-sm">{{ $message }}</span>
-      @enderror
-          </div>
-
-          {{-- 4. Add this JavaScript to the bottom of your Blade file --}}
-          <script>
-            // Listen for input events on the visible text field
-            document.getElementById('author_name').addEventListener('input', function (e) {
-              let input = e.target,
-                list = document.getElementById(input.getAttribute('list')),
-                hiddenInput = document.getElementById('author-id'),
-                inputValue = input.value;
-
-              hiddenInput.value = ""; // Default to empty
-
-              // Find the selected option in the datalist
-              for (const option of list.options) {
-                if (option.value === inputValue) {
-                  // If a match is found, set the hidden input's value to the option's data-id
-                  hiddenInput.value = option.getAttribute('data-id');
-                  break;
-                }
-              }
-            });
-          </script>
-
           <div class="col-span-6">
             <label for="content" class="block text-sm/6 font-bold text-gray-900">Post content</label>
             <div class="mt-2">

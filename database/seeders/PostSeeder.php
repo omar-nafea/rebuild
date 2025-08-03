@@ -20,7 +20,7 @@ class PostSeeder extends Seeder
         throw new \Exception('No categories found. Seed categories before posts.');
     }
 
-    Post::factory()->count(50)->create()->each(function ($post) use ($categoryIds) {
+    Post::factory()->count(5)->create()->each(function ($post) use ($categoryIds) {
         $categoryId = $categoryIds[array_rand($categoryIds)];
         $post->categories()->attach($categoryId);
     });

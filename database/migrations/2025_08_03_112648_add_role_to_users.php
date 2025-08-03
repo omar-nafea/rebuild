@@ -11,13 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('writers', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->string('name');
-            $table->string('email');
-            $table->string('password');
-            $table->integer('num_posts')->default(0);
-            $table->timestamps();
+        Schema::table('users', function (Blueprint $table) {
+            //
+            $table->string('role')->default('viewer'); // Default role is 'viewer'
         });
     }
 
@@ -26,6 +22,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('writers');
+        Schema::table('users', function (Blueprint $table) {
+            //
+            $table->dropColumn('role');
+        });
     }
 };

@@ -24,7 +24,6 @@ class PostRequest extends FormRequest
         return [
             'title' => 'bail|required|string|max:255|unique:posts,title',
             'content' => 'bail|required|string',
-            'writer_id' => 'bail|required|exists:writers,id',
         ];
     }
 
@@ -38,8 +37,6 @@ class PostRequest extends FormRequest
         return [
             'title.required' => 'The post title is required.',
             'title.unique' => 'The post title must be unique.',
-            'writer_id.required' => 'The writer is required.',
-            'writer_id.exists' => 'The selected writer does not exist.',
             'content.required' => 'The post body is required.',
         ];
     }

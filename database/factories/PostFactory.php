@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\Post;
+use App\Models\User;
 use App\Models\Writer;
 
 class PostFactory extends Factory
@@ -16,7 +17,7 @@ class PostFactory extends Factory
             'title' => $this->faker->sentence(),
             'content' => $this->faker->paragraphs(3, true),
             'isPublished' => $this->faker->boolean(),
-            'writer_id' => Writer::factory(),
+            'user_id' => User::factory()->create()->id,
         ];
     }
 } 

@@ -25,7 +25,6 @@
                 <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
                 <x-nav :active="request()->is('/')" href="/">Home</x-nav>
                 <x-nav :active="request()->is('posts')" href="/posts">Posts</x-nav>
-                <x-nav :active="request()->is('writers')" href="/writers">Writers</x-nav>
                 <x-nav :active="request()->is('categories')" href="/categories">Categories</x-nav>
               </div>
             </div>

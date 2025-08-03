@@ -16,12 +16,12 @@ class Post extends Model
     public $incrementing = false;
     protected $table = 'posts';
     protected $primaryKey = 'id';
-    protected $fillable = ['title', 'content', 'isPublished', 'writer_id'];
+    protected $fillable = ['title', 'content', 'isPublished', 'user_id'];
 
 
     public function writer()
     {
-        return $this->belongsTo(Writer::class);
+        return $this->belongsTo(User::class);
     }
 
     public function categories(){
